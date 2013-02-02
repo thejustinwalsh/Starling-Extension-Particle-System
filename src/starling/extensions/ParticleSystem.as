@@ -214,6 +214,7 @@ package starling.extensions
             return resultRect;
         }
         
+		private static var _viewport:Rectangle;
         public function advanceTime(passedTime:Number):void
         {
             var particleIndex:int = 0;
@@ -221,11 +222,12 @@ package starling.extensions
             
             // advance existing particles
             
+			if (!_viewport) _viewport = Starling.current.viewPort;
             while (particleIndex < mNumParticles)
             {
                 particle = mParticles[particleIndex] as Particle;
                 
-                if (particle.currentTime < particle.totalTime)
+                if (particle.currentTime < particle.totalTime && _viewport.contains(particle.x, particle.y))
                 {
                     advanceParticle(particle, passedTime);
                     ++particleIndex;
